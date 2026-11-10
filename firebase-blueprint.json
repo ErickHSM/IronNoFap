@@ -1,0 +1,109 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with level, XP, and streak statistics",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Google UID" },
+        "displayName": { "type": "string", "description": "User public display name" },
+        "email": { "type": "string", "description": "User email address" },
+        "currentStreak": { "type": "integer", "description": "Current consecutive clean days" },
+        "bestStreak": { "type": "integer", "description": "All-time highest streak" },
+        "xp": { "type": "integer", "description": "Discipline experience points" },
+        "rank": { "type": "string", "description": "Current fortitude title" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["userId", "displayName", "currentStreak", "bestStreak", "xp", "rank", "createdAt", "updatedAt"]
+    },
+    "DayLog": {
+      "title": "DayLog",
+      "description": "Record of clean, relapsed, or missed day",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Google UID" },
+        "date": { "type": "string", "description": "Calendar date YYYY-MM-DD" },
+        "status": { "type": "string", "enum": ["CLEAN", "RELAPSE", "UNMARKED"], "description": "State of the day" },
+        "note": { "type": "string", "description": "Daily reflection or comment" },
+        "urgeLevel": { "type": "integer", "description": "Urge level from 0 to 3" },
+        "triggerReason": { "type": "string", "description": "Relapse trigger if any" },
+        "penaltyAssigned": { "type": "string", "description": "Disciplinary penalty name" },
+        "penaltyCompleted": { "type": "boolean", "description": "Whether assigned penalty was fulfilled" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last updated timestamp" }
+      },
+      "required": ["userId", "date", "status", "createdAt", "updatedAt"]
+    },
+    "UserPunishment": {
+      "title": "UserPunishment",
+      "description": "Constructive penalty assigned to user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Google UID" },
+        "id": { "type": "string", "description": "Unique punishment ID" },
+        "title": { "type": "string", "description": "Penalty task title" },
+        "description": { "type": "string", "description": "Instructions for penalty" },
+        "category": { "type": "string", "description": "Category: Fisica, Mental, Detox Digital, Produtividade" },
+        "intensity": { "type": "string", "description": "Intensity level: Leve, Moderada, Extrema" },
+        "isCompleted": { "type": "boolean", "description": "Whether completed" },
+        "dateAssigned": { "type": "string", "description": "Date assigned YYYY-MM-DD" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["userId", "id", "title", "description", "category", "intensity", "isCompleted", "dateAssigned", "createdAt", "updatedAt"]
+    },
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "Mindfulness, mood, and stoic journal entry",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Google UID" },
+        "id": { "type": "string", "description": "Unique entry ID" },
+        "date": { "type": "string", "description": "Date YYYY-MM-DD" },
+        "mood": { "type": "string", "description": "Emotional state / mood" },
+        "energyLevel": { "type": "integer", "description": "Energy level 1 to 5" },
+        "reflection": { "type": "string", "description": "Mindful reflection text" },
+        "gratitude": { "type": "string", "description": "What user is grateful for" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["userId", "id", "date", "mood", "energyLevel", "reflection", "createdAt"]
+    },
+    "DailyMissions": {
+      "title": "DailyMissions",
+      "description": "Three daily discipline quests",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Google UID" },
+        "date": { "type": "string", "description": "Date YYYY-MM-DD" },
+        "workoutDone": { "type": "boolean", "description": "Physical workout finished" },
+        "coldShowerDone": { "type": "boolean", "description": "Cold shower completed" },
+        "screenDetoxDone": { "type": "boolean", "description": "Night screen detox completed" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["userId", "date", "workoutDone", "coldShowerDone", "screenDetoxDone", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with streak, rank, and XP"
+    },
+    "/users/{userId}/day_records/{date}": {
+      "schema": "DayLog",
+      "description": "Calendar daily check-in records"
+    },
+    "/users/{userId}/punishments/{punishmentId}": {
+      "schema": "UserPunishment",
+      "description": "Assigned discipline penalties"
+    },
+    "/users/{userId}/journal_entries/{entryId}": {
+      "schema": "JournalEntry",
+      "description": "Reflective mindset log entries"
+    },
+    "/users/{userId}/daily_missions/{date}": {
+      "schema": "DailyMissions",
+      "description": "Daily discipline habit quests"
+    }
+  }
+}

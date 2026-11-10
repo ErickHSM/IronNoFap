@@ -1,0 +1,6 @@
+{
+  "name": "IronWill - NoFap Tracker",
+  "description": "App anti-pornografia e NoFap com calendário de dias limpos, estatísticas de progresso, metas de dias consecutivos e sistema de punição e disciplina.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
